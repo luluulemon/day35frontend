@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { lastValueFrom, Observable } from 'rxjs';
 import { Game } from '../models/Game';
 
 @Injectable({
@@ -15,6 +15,7 @@ export class GameService {
   getGames(limit: number, offset:number): Observable<Game[]>{
     const params = new HttpParams().set("limit", limit).set("offset", offset);
 
+    // headers dun seem neccessary here
     const headers= new HttpHeaders()
     .set('content-type', 'application/json')
     .set('Access-Control-Allow-Origin', '*');
@@ -22,5 +23,6 @@ export class GameService {
     //return this.httpClient.get<Game[]>(this.URL, { params: params, headers:headers })
     return this.httpClient.get<Game[]>(this.URL_public, { params: params,  })
   }
+
 
 }

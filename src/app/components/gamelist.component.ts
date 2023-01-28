@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { Connectable } from 'rxjs';
+import { Connectable, lastValueFrom } from 'rxjs';
 import { Game } from '../models/Game';
 import { GameService } from '../services/game.service';
 
@@ -20,11 +20,18 @@ export class GamelistComponent implements OnChanges{
 
   ngOnChanges(changes: SimpleChanges){
     console.info(changes)
-    //this.viewPerPage = changes["viewPerPage"].currentValue;    
-    this.gameSvc.getGames(this.viewPerPage, this.offset).subscribe((resp)=> {
-      console.log(resp);  
-    this.games = resp;
-    })
+   
+    // this.gameSvc.getGames(this.viewPerPage, this.offset).subscribe((resp)=> {
+    //   console.log(resp);  
+    // this.games = resp;
+    // })
+
+    // Top -> Using observable.subscribe, Bottom (use Promise) -> Using lastValueFrom(observable).then()
+    lastValueFrom (this.gameSvc.getGames(this.viewPerPage,this.offset) )
+        .then((result) => this.games = result)
+        //.catch((error) => console.info(error));
+        
+    
   }
 
   previous(){
